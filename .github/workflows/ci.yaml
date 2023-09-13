@@ -2,9 +2,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [main]
+    branches: [trunk]
   pull_request:
-    branches: [main]
+    branches: [trunk]
 
 jobs:
   # This job will run linting, typechecking and tests on your codebase
@@ -12,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js 16.14.2
+      - name: Use Node.js 18.17.1
         uses: actions/setup-node@v3
         with:
-          node-version: 16.14.2
+          node-version: 18.17.1
 
       # Install packages
       - run: npm ci
@@ -37,10 +37,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js 16.14.2
+      - name: Use Node.js 18.17.1
         uses: actions/setup-node@v3
         with:
-          node-version: 16.14.2
+          node-version: 18.17.1
 
       # Install packages
       - run: npm ci
@@ -55,3 +55,30 @@ jobs:
 
       # build & start app in production mode and load `/`-index page
       - run: "npm run build && (timeout 60 npm run preview & (sleep 10 && curl --fail localhost:3000)) && echo Run production check successful"
+  # this publishes a release
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # publish github release
+      issues: write # comment on issues
+      pull-requests: write # comment on released pull requests
+      id-token: write # enable OIDC for npm provenance
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Use Node.js 18.17.1
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.17.1
+      - name: Install dependencies
+        run: npm ci
+      - name: Verify integrity of provenance attestations and registry signatures
+        run: npm audit signatures
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release

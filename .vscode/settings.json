@@ -24,4 +24,5 @@
     "*.css": "tailwindcss"
   },
   "volar.autoCompleteRefs": true,
+  "nuxt.isNuxtApp": false,
 }
