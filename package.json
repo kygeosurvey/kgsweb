@@ -51,7 +51,7 @@
     "bun-types": "latest"
   },
   "dependencies": {
-    "@prisma/client": "^4.8.1",
+    "@prisma/client": "^5.0.0",
     "@sidebase/core": "^0.1.4"
   },
   "name": "kgsweb",
