@@ -15,7 +15,7 @@ jobs:
       - name: Use Node.js 18.17.1
         uses: actions/setup-node@v3
         with:
-          node-version: 18.17.1
+          node-version: 18.20.8
 
       # Install packages
       - run: npm ci
@@ -40,7 +40,7 @@ jobs:
       - name: Use Node.js 18.17.1
         uses: actions/setup-node@v3
         with:
-          node-version: 18.17.1
+          node-version: 18.20.8
 
       # Install packages
       - run: npm ci
@@ -72,7 +72,7 @@ jobs:
       - name: Use Node.js 18.17.1
         uses: actions/setup-node@v3
         with:
-          node-version: 18.17.1
+          node-version: 18.20.8
       - name: Install dependencies
         run: npm ci
       - name: Verify integrity of provenance attestations and registry signatures
